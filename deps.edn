@@ -8,4 +8,8 @@
          :main-opts ["-m" "cognitect.test-runner"]}
   ;; clojure -M:render-html [out-file] -> regenerate docs/samples/operator-console.html
   ;; through the real actor (build-time demo console).
-  :render-html {:main-opts ["-m" "indprod.render-html"]}}}
+  :render-html {:main-opts ["-m" "indprod.render-html"]}
+  :lint {:replace-deps {clj-kondo/clj-kondo {:mvn/version "2024.11.14"}}
+         :main-opts    ["-m" "clj-kondo.main"
+                        "--lint" "src" "test"
+                        "--fail-level" "error"]}}}
