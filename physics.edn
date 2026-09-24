@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README: an ISCO 2141 Industrial and Production Engineers blueprint -- the
+;; design/analysis work is cognitive; physical execution is robotics-gated.
+;; The physical execution such engineers design and balance is the line
+;; itself: a pick-and-place cell whose cycle time sets takt, and a tugger AGV
+;; carrying parts bins between stations.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-2141"
+ :cases
+ [{:id :pick-place-takt
+   :kind :manipulator
+   :procedure "cell arm moves a 2 kg part from the infeed conveyor to the fixture; the move time is squeezed to meet takt"
+   :params {:l1-m 0.40 :l2-m 0.35 :m1-kg 4.0 :m2-kg 3.0 :payload-kg 2.0
+            :from [0.55 0.10] :to [0.05 0.55] :steps 600}
+   :sweep {:param :duration-s :values [0.3 0.4 0.6 1.0 2.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 50.0 :basis "estimate: continuous shoulder torque of a light collaborative arm; peak ratings are higher but not sustainable every cycle"}
+   :boundary {:lo 0.2 :hi 3.0}}
+  {:id :tugger-parts-run
+   :kind :transport
+   :procedure "tugger AGV pulls a train of parts bins 120 m from the supermarket to the assembly line"
+   :params {:mass-kg 250.0 :distance-m 120.0 :v-max-mps 1.5 :a-max-mps2 0.4
+            :brake-decel-mps2 0.8 :drive-force-n 600.0 :crr 0.015
+            :cog-height-m 0.6 :support-half-length-m 0.4}
+   :sweep {:param :payload-kg :values [100.0 400.0 800.0 1500.0 2500.0]}
+   :quantity :cycle-time-s
+   :limit {:max 100.0 :basis "estimate: one delivery leg inside the 20-minute milk-run loop with 10 stops"}
+   :boundary {:lo 50.0 :hi 4000.0}}]}
