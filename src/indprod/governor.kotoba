@@ -2,7 +2,7 @@
   "IndustrialProductionEngineersGovernor — the independent safety/
   traceability layer for the ISCO-08 2141 community industrial &
   production engineers actor (itonami actor pattern, ADR-2607011000 /
-  CLAUDE.md Actors section). Modeled on cloud-itonami-isco-4311's
+  AGENTS.md Actors section). Modeled on cloud-itonami-isco-4311's
   bookkeeping.governor. Manufacturing twist: a measurement's
   conformance is INTERVAL CONTAINMENT against the registered
   tolerance band [LSL, USL], and a proposed tolerance stack-up is
